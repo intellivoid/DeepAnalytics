@@ -8,6 +8,8 @@
     use MongoDB\Client;
     use MongoDB\Database;
 
+    include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Objects' . DIRECTORY_SEPARATOR . 'Month.php');
+
     if(class_exists('MongoDB\Client') == false)
     {
         include_once(__DIR__ . DIRECTORY_SEPARATOR . 'MongoDB' . DIRECTORY_SEPARATOR . 'MongoDB.php');
@@ -65,4 +67,6 @@
 
             $this->Database = $this->MongoDB_Client->selectDatabase($this->DatabaseConfiguration['Database']);
         }
+
+        public function tally(string $name, int $reference_id, ):
     }
