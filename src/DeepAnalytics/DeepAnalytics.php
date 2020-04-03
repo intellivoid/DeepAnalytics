@@ -8,6 +8,7 @@
     use MongoDB\Client;
     use MongoDB\Database;
 
+    include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Objects' . DIRECTORY_SEPARATOR . 'Day.php');
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Objects' . DIRECTORY_SEPARATOR . 'Month.php');
 
     if(class_exists('MongoDB\Client') == false)
