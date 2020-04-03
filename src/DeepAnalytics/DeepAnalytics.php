@@ -52,8 +52,8 @@
          */
         public function __construct()
         {
-            $this->acm = new acm(__DIR__, 'DeepAnalytics');
-            $this->DatabaseConfiguration = $this->acm->getConfiguration('DeepAnalytics');
+            $this->acm = new acm(__DIR__, 'deep_analytics');
+            $this->DatabaseConfiguration = $this->acm->getConfiguration('MongoDB');
 
             $this->MongoDB_Client = new Client(
                 "mongodb://" . $this->DatabaseConfiguration['Host'] . ":" . $this->DatabaseConfiguration['Port'],
