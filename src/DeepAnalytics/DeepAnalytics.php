@@ -74,6 +74,18 @@
             $this->Database = $this->MongoDB_Client->selectDatabase($this->DatabaseConfiguration['Database']);
         }
 
+        /**
+         * Tallies an hourly rating
+         *
+         * @param string $collection
+         * @param int $reference_id
+         * @param string $name
+         * @param int $amount
+         * @param int|null $year
+         * @param int|null $month
+         * @param null $day
+         * @return HourlyData
+         */
         public function tallyHourly(string $collection, int $reference_id, string $name, int $amount=1,
                                     int $year=null, int $month=null, $day=null): HourlyData
         {
