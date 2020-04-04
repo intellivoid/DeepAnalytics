@@ -5,6 +5,7 @@
 
     use acm\acm;
     use DeepAnalytics\Objects\HourlyData;
+    use DeepAnalytics\Objects\MonthlyData;
     use Exception;
     use MongoDB\BSON\ObjectId;
     use MongoDB\Client;
@@ -12,7 +13,7 @@
 
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Objects' . DIRECTORY_SEPARATOR . 'Date.php');
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Objects' . DIRECTORY_SEPARATOR . 'HourlyData.php');
-    include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Objects' . DIRECTORY_SEPARATOR . 'Month.php');
+    include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Objects' . DIRECTORY_SEPARATOR . 'MonthlyData.php');
 
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Utilities.php');
 
@@ -86,7 +87,7 @@
          * @param null $day
          * @return HourlyData
          */
-        public function tallyHourly(string $collection, int $reference_id, string $name, int $amount=1,
+        public function tallyHourly(string $collection, string $name, int $reference_id=null, int $amount=1,
                                     int $year=null, int $month=null, $day=null): HourlyData
         {
             $HourlyData = new HourlyData($year, $month, $day);
@@ -94,7 +95,23 @@
             $HourlyData->Name = $name;
 
             $Collection = $this->Database->selectCollection($collection . '_hourly');
-            $Document = $Collection->findOne(["stamp" => $HourlyData->Stamp, "name"=>$name]);
+            $Document = null;
+
+            if(is_null($reference_id))
+            {
+                $Document = $Collection->findOne([
+                    "stamp" => $HourlyData->Stamp,
+                    "name" => $name
+                ]);
+            }
+            else
+            {
+                $Document = $Collection->findOne([
+                    "stamp" => $HourlyData->Stamp,
+                    "name" => $name,
+                    "reference_id" => $reference_id
+                ]);
+            }
 
             if(is_null($Document))
             {
@@ -104,8 +121,6 @@
                 $Document = $Collection->insertOne($HourlyDataDocument);
 
                 $HourlyData->ID = (string)$Document->getInsertedId();
-
-                return $HourlyData;
             }
             else
             {
@@ -120,8 +135,72 @@
                     ['_id' => new ObjectID($HourlyData->ID)],
                     ['$set' => $HourlyDataDocument]
                 );
-
-                return $HourlyData;
             }
+
+            return $HourlyData;
+        }
+
+        /**
+         * Tallies a monthly rating
+         *
+         * @param string $collection
+         * @param int $reference_id
+         * @param string $name
+         * @param int $amount
+         * @param int|null $year
+         * @param int|null $month
+         * @return MonthlyData
+         */
+        public function tallyMonthly(string $collection, string $name, int $reference_id=null, int $amount=1,
+                                    int $year=null, int $month=null): MonthlyData
+        {
+            $MonthlyData = new MonthlyData($year, $month);
+            $MonthlyData->ReferenceID = $reference_id;
+            $MonthlyData->Name = $name;
+
+            $Collection = $this->Database->selectCollection($collection . '_monthly');
+            $Document = null;
+
+            if(is_null($reference_id))
+            {
+                $Document = $Collection->findOne([
+                    "stamp" => $MonthlyData->Stamp,
+                    "name" => $name
+                ]);
+            }
+            else
+            {
+                $Document = $Collection->findOne([
+                    "stamp" => $MonthlyData->Stamp,
+                    "name" => $name,
+                    "reference_id" => $reference_id
+                ]);
+            }
+
+            if(is_null($Document))
+            {
+                $MonthlyData->tally($amount);
+                $MonthlyDataDocument = $MonthlyData->toArray();
+                unset($MonthlyDataDocument["id"]);
+                $Document = $Collection->insertOne($MonthlyDataDocument);
+
+                $MonthlyData->ID = (string)$Document->getInsertedId();
+            }
+            else
+            {
+                $MonthlyData = Utilities::BSONDocumentToMonthlyData($Document);
+
+                $MonthlyData->tally($amount);
+                $MonthlyData->LastUpdated = (int)time();
+                $MonthlyDataDocument = $MonthlyData->toArray();
+                unset($MonthlyDataDocument["id"]);
+
+                $Collection->updateOne(
+                    ['_id' => new ObjectID($MonthlyData->ID)],
+                    ['$set' => $MonthlyDataDocument]
+                );
+            }
+
+            return $MonthlyData;
         }
     }

@@ -3,14 +3,15 @@
 
     namespace DeepAnalytics\Objects;
 
+
     use DeepAnalytics\Utilities;
     use InvalidArgumentException;
 
     /**
-     * Class HourlyData
+     * Class MonthlyData
      * @package DeepAnalytics\Objects
      */
-    class HourlyData
+    class MonthlyData
     {
         /**
          * @var string
@@ -46,14 +47,7 @@
         public $Stamp;
 
         /**
-         * Unique month stamp for this record
-         *
-         * @var string
-         */
-        public $MonthStamp;
-
-        /**
-         * The 24 hour timeline
+         * The monthly data
          *
          * @var array
          */
@@ -77,9 +71,8 @@
          * HourlyData constructor.
          * @param int|null $year
          * @param int|null $month
-         * @param null $day
          */
-        public function __construct(int $year=null, int $month=null, $day=null)
+        public function __construct(int $year=null, int $month=null)
         {
             $this->Date = new Date();
 
@@ -93,40 +86,34 @@
                 $this->Date->Month = $month;
             }
 
-            if(is_null($day) == false)
-            {
-                $this->Date->Day = $day;
-            }
-
-            $this->Stamp = $this->Date->getDayStamp();
-            $this->MonthStamp = $this->Date->getMonthStamp();
-            $this->Data = Utilities::generateHourArray();
+            $this->Stamp = $this->Date->getMonthStamp();
+            $this->Data = Utilities::generateMonthArray($this->Date->Month, $this->Date->Year);
 
             $this->Created = (int)time();
             $this->LastUpdated = (int)$this->Created;
         }
 
         /**
-         * Tallies the hourly rate
+         * Tallies the monthly rate
          *
          * @param int $amount
-         * @param int|null $hour
+         * @param int|null $day
          */
-        public function tally(int $amount=1, int $hour=null)
+        public function tally(int $amount=1, int $day=null)
         {
-            if(is_null($hour))
+            if(is_null($day))
             {
-                $CurrentHour = (int)date('G');
-                $this->Data[$CurrentHour] += $amount;
+                $day = (int)date('j');
+                $this->Data[$day] += $amount;
             }
             else
             {
-                if(isset($this->Data[$hour]) == false)
+                if(isset($this->Data[$day]) == false)
                 {
-                    throw new InvalidArgumentException("The given hour must be a value between a 24 hour period");
+                    throw new InvalidArgumentException("The given day must be a value between 1 and " . count($this->Data));
                 }
 
-                $this->Data[$hour] += $amount;
+                $this->Data[$day] += $amount;
             }
         }
 
@@ -141,9 +128,8 @@
                 'id' => $this->ID,
                 'reference_id' => (int)$this->ReferenceID,
                 'name' => $this->Name,
-                'date' => $this->Date->toArray(true),
+                'date' => $this->Date->toArray(false),
                 'stamp' => $this->Stamp,
-                'month_stamp' => $this->MonthStamp,
                 'data' => $this->Data,
                 'last_updated' => (int)$this->LastUpdated,
                 'created' => (int)$this->Created
@@ -154,17 +140,17 @@
          * Constructs object from array
          *
          * @param array $data
-         * @return HourlyData
+         * @return MonthlyData
          */
-        public static function fromArray(array $data): HourlyData
+        public static function fromArray(array $data): MonthlyData
         {
-            $HourlyDataObject = new HourlyData();
+            $MonthlyDataObject = new MonthlyData();
 
             if(isset($data['id']))
             {
                 if(is_null($data['id']) == false)
                 {
-                    $HourlyDataObject->ID = $data['id'];
+                    $MonthlyDataObject->ID = $data['id'];
                 }
             }
 
@@ -172,50 +158,45 @@
             {
                 if(is_null($data['_id']) == false)
                 {
-                    $HourlyDataObject->ID = (string)$data['_id'];
+                    $MonthlyDataObject->ID = (string)$data['_id'];
                 }
             }
 
             if(isset($data['reference_id']))
             {
-                $HourlyDataObject->ReferenceID = $data['reference_id'];
+                $MonthlyDataObject->ReferenceID = $data['reference_id'];
             }
 
             if(isset($data['name']))
             {
-                $HourlyDataObject->Name = $data['name'];
+                $MonthlyDataObject->Name = $data['name'];
             }
 
             if(isset($data['date']))
             {
-                $HourlyDataObject->Date = Date::fromArray($data['date']);
+                $MonthlyDataObject->Date = Date::fromArray($data['date']);
             }
 
             if(isset($data['stamp']))
             {
-                $HourlyDataObject->Stamp = $data['stamp'];
-            }
-
-            if(isset($data['month_stamp']))
-            {
-                $HourlyDataObject->MonthStamp = $data['month_stamp'];
+                $MonthlyDataObject->Stamp = $data['stamp'];
             }
 
             if(isset($data['data']))
             {
-                $HourlyDataObject->Data = $data['data'];
+                $MonthlyDataObject->Data = $data['data'];
             }
 
             if(isset($data['last_updated']))
             {
-                $HourlyDataObject->LastUpdated = (int)$data['last_updated'];
+                $MonthlyDataObject->LastUpdated = (int)$data['last_updated'];
             }
 
             if(isset($data['created']))
             {
-                $HourlyDataObject->Created = (int)$data['created'];
+                $MonthlyDataObject->Created = (int)$data['created'];
             }
 
-            return $HourlyDataObject;
+            return $MonthlyDataObject;
         }
     }
