@@ -3,6 +3,7 @@
 
     namespace DeepAnalytics;
 
+    use DeepAnalytics\Objects\Date;
     use DeepAnalytics\Objects\HourlyData;
     use DeepAnalytics\Objects\MonthlyData;
     use MongoDB\Model\BSONDocument;
@@ -122,5 +123,35 @@
             $DocumentData['data'] = (array)$DocumentData['data']->jsonSerialize();
 
             return MonthlyData::fromArray($DocumentData);
+        }
+
+        /**
+         * Constructs the date object
+         *
+         * @param int|null $year
+         * @param int|null $month
+         * @param int|null $day
+         * @return Date
+         */
+        static function constructDate(int $year=null, int $month=null, int $day=null): Date
+        {
+            $DateObject = new Date();
+
+            if(is_null($year) == false)
+            {
+                $DateObject->Year = $year;
+            }
+
+            if(is_null($month) == false)
+            {
+                $DateObject->Month = $month;
+            }
+
+            if(is_null($day) == false)
+            {
+                $DateObject->Day = $day;
+            }
+
+            return $DateObject;
         }
     }

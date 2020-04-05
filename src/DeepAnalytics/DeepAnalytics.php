@@ -11,6 +11,7 @@
     use MongoDB\Client;
     use MongoDB\Database;
     use MongoDB\Driver\Exception\BulkWriteException;
+    use MongoDB\Model\BSONDocument;
 
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Objects' . DIRECTORY_SEPARATOR . 'Date.php');
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Objects' . DIRECTORY_SEPARATOR . 'HourlyData.php');
@@ -179,14 +180,64 @@
         }
 
         /**
+         * @param string $collection
+         * @param string $name
+         * @param int|null $reference_id
+         * @param int $limit
+         * @return array
+         */
+        public function getHourlyDataRange(string $collection, string $name, int $reference_id=null, $limit=100): array
+        {
+            $Collection = $this->Database->selectCollection($collection . '_hourly');
+
+            if(is_null($reference_id))
+            {
+                $reference_id = 0;
+            }
+
+            $Cursor = $Collection->find(
+                [
+                    'name' => $name,
+                    'reference_id' => $reference_id
+                ],
+                [
+                    'projection' => [
+                        '_id' => 1,
+                        'stamp' => 1,
+                        'date' => 1
+                    ],
+                    'limit' => $limit
+                ]
+            );
+
+            $Results = [];
+
+            /** @var BSONDocument $document */
+            foreach($Cursor as $document)
+            {
+                $DocumentArray = (array)$document->jsonSerialize();
+                $DateArray = (array)$DocumentArray['date']->jsonSerialize();
+
+                $Results[$DocumentArray['stamp']] = array(
+                    'id' => (string)$DocumentArray['_id'],
+                    'date' => $DateArray
+                );
+            }
+
+            return $Results;
+        }
+
+
+        /**
          * Tallies a monthly rating
          *
          * @param string $collection
-         * @param int $reference_id
          * @param string $name
+         * @param int $reference_id
          * @param int $amount
          * @param int|null $year
          * @param int|null $month
+         * @param bool $throw_dup
          * @return MonthlyData
          */
         public function tallyMonthly(string $collection, string $name, int $reference_id=null, int $amount=1,
