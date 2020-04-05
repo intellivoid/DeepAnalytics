@@ -102,19 +102,14 @@
 
             if(is_null($reference_id))
             {
-                $Document = $Collection->findOne([
-                    "stamp" => $HourlyData->Stamp,
-                    "name" => $name
-                ]);
+                $reference_id = 0;
             }
-            else
-            {
-                $Document = $Collection->findOne([
-                    "stamp" => $HourlyData->Stamp,
-                    "name" => $name,
-                    "reference_id" => $reference_id
-                ]);
-            }
+
+            $Document = $Collection->findOne([
+                "stamp" => $HourlyData->Stamp,
+                "name" => $name,
+                "reference_id" => $reference_id
+            ]);
 
             if(is_null($Document))
             {
@@ -180,6 +175,8 @@
         }
 
         /**
+         * Returns a range of hourly data
+         *
          * @param string $collection
          * @param string $name
          * @param int|null $reference_id
@@ -206,6 +203,9 @@
                         'stamp' => 1,
                         'date' => 1
                     ],
+                    'sort' => [
+                        'created' => -1
+                    ],
                     'limit' => $limit
                 ]
             );
@@ -226,7 +226,6 @@
 
             return $Results;
         }
-
 
         /**
          * Tallies a monthly rating
@@ -252,19 +251,14 @@
 
             if(is_null($reference_id))
             {
-                $Document = $Collection->findOne([
-                    "stamp" => $MonthlyData->Stamp,
-                    "name" => $name
-                ]);
+                $reference_id = 0;
             }
-            else
-            {
-                $Document = $Collection->findOne([
-                    "stamp" => $MonthlyData->Stamp,
-                    "name" => $name,
-                    "reference_id" => $reference_id
-                ]);
-            }
+
+            $Document = $Collection->findOne([
+                "stamp" => $MonthlyData->Stamp,
+                "name" => $name,
+                "reference_id" => $reference_id
+            ]);
 
             if(is_null($Document))
             {
