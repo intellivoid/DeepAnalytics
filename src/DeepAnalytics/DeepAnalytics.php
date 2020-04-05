@@ -10,6 +10,7 @@
     use MongoDB\BSON\ObjectId;
     use MongoDB\Client;
     use MongoDB\Database;
+    use MongoDB\Driver\Exception\BulkWriteException;
 
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Objects' . DIRECTORY_SEPARATOR . 'Date.php');
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Objects' . DIRECTORY_SEPARATOR . 'HourlyData.php');
@@ -79,16 +80,17 @@
          * Tallies an hourly rating
          *
          * @param string $collection
-         * @param int $reference_id
          * @param string $name
+         * @param int $reference_id
          * @param int $amount
          * @param int|null $year
          * @param int|null $month
-         * @param null $day
+         * @param int|null $day
+         * @param bool $throw_dup
          * @return HourlyData
          */
         public function tallyHourly(string $collection, string $name, int $reference_id=null, int $amount=1,
-                                    int $year=null, int $month=null, $day=null): HourlyData
+                                    int $year=null, int $month=null, int $day=null, bool $throw_dup=false): HourlyData
         {
             $HourlyData = new HourlyData($year, $month, $day);
             $HourlyData->ReferenceID = $reference_id;
@@ -115,10 +117,46 @@
 
             if(is_null($Document))
             {
+                if(is_null($reference_id))
+                {
+                    $reference_id = 0;
+                }
+
+                $Collection->createIndex(
+                    [
+                        "stamp" => 1,
+                        "name" => 1,
+                        "reference_id" => 1
+                    ],
+                    [
+                        "unique" => true
+                    ]
+                );
+
                 $HourlyData->tally($amount);
                 $HourlyDataDocument = $HourlyData->toArray();
                 unset($HourlyDataDocument["id"]);
-                $Document = $Collection->insertOne($HourlyDataDocument);
+
+                try
+                {
+                    $Document = $Collection->insertOne($HourlyDataDocument);
+                }
+                catch(BulkWriteException $bulkWriteException)
+                {
+                    // Handle duplicate error
+                    if($bulkWriteException->getCode() == 11000)
+                    {
+                        if($throw_dup)
+                        {
+                            throw $bulkWriteException;
+                        }
+
+                        return $this->tallyHourly(
+                            $collection, $name, $reference_id, $amount=1,
+                            $year, $month, $day, true
+                        );
+                    }
+                }
 
                 $HourlyData->ID = (string)$Document->getInsertedId();
             }
@@ -152,7 +190,7 @@
          * @return MonthlyData
          */
         public function tallyMonthly(string $collection, string $name, int $reference_id=null, int $amount=1,
-                                    int $year=null, int $month=null): MonthlyData
+                                    int $year=null, int $month=null, bool $throw_dup=false): MonthlyData
         {
             $MonthlyData = new MonthlyData($year, $month);
             $MonthlyData->ReferenceID = $reference_id;
@@ -179,10 +217,46 @@
 
             if(is_null($Document))
             {
+                if(is_null($reference_id))
+                {
+                    $reference_id = 0;
+                }
+
+                $Collection->createIndex(
+                    [
+                        "stamp" => 1,
+                        "name" => 1,
+                        "reference_id" => 1
+                    ],
+                    [
+                        "unique" => true
+                    ]
+                );
+
                 $MonthlyData->tally($amount);
                 $MonthlyDataDocument = $MonthlyData->toArray();
                 unset($MonthlyDataDocument["id"]);
-                $Document = $Collection->insertOne($MonthlyDataDocument);
+
+                try
+                {
+                    $Document = $Collection->insertOne($MonthlyDataDocument);
+                }
+                catch(BulkWriteException $bulkWriteException)
+                {
+                    // Handle duplicate error
+                    if($bulkWriteException->getCode() == 11000)
+                    {
+                        if($throw_dup)
+                        {
+                            throw $bulkWriteException;
+                        }
+
+                        return $this->tallyMonthly(
+                            $collection, $name, $reference_id, $amount=1,
+                            $year, $month, true
+                        );
+                    }
+                }
 
                 $MonthlyData->ID = (string)$Document->getInsertedId();
             }

@@ -6,6 +6,6 @@
 
     $DeepAnalytics = new \DeepAnalytics\DeepAnalytics();
 
-    $DeepAnalytics->tallyHourly('example', 0, 'clicks');
-    $DeepAnalytics->tallyHourly('example', 0, 'requests', 2);
-    $DeepAnalytics->tallyHourly('example', 0, 'downloads', 5);
+    $DeepAnalytics->tallyHourly('example',  'clicks');
+    $DeepAnalytics->tallyHourly('example', 'requests', null, 2);
+    $DeepAnalytics->tallyHourly('example', 'downloads', null, 5);
