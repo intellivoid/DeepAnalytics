@@ -4,6 +4,7 @@
     namespace DeepAnalytics;
 
     use acm\acm;
+    use DeepAnalytics\Exceptions\DataNotFoundException;
     use DeepAnalytics\Objects\HourlyData;
     use DeepAnalytics\Objects\MonthlyData;
     use Exception;
@@ -12,6 +13,8 @@
     use MongoDB\Database;
     use MongoDB\Driver\Exception\BulkWriteException;
     use MongoDB\Model\BSONDocument;
+
+    include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Exceptions' . DIRECTORY_SEPARATOR . 'DataNotFoundException.php');
 
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Objects' . DIRECTORY_SEPARATOR . 'Date.php');
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Objects' . DIRECTORY_SEPARATOR . 'HourlyData.php');
@@ -160,7 +163,7 @@
             {
                 $HourlyData = Utilities::BSONDocumentToHourlyData($Document);
 
-                $HourlyData->tally($amount);
+                $HourlyData->tally($amount, 7);
                 $HourlyData->LastUpdated = (int)time();
                 $HourlyDataDocument = $HourlyData->toArray();
                 unset($HourlyDataDocument["id"]);
@@ -225,6 +228,67 @@
             }
 
             return $Results;
+        }
+
+        /**
+         * Gets Hourly Data by content pointers
+         *
+         * @param string $collection
+         * @param string $name
+         * @param int|null $reference_id
+         * @param int|null $year
+         * @param int|null $month
+         * @param int|null $day
+         * @return HourlyData
+         * @throws DataNotFoundException
+         */
+        public function getHourlyData(string $collection, string $name, int $reference_id=null,
+                                      int $year=null, int $month=null, int $day=null): HourlyData
+        {
+            $Collection = $this->Database->selectCollection($collection . '_hourly');
+            $DateObject = Utilities::constructDate($year, $month, $day);
+
+            if(is_null($reference_id))
+            {
+                $reference_id = 0;
+            }
+
+            $Document = $Collection->findOne([
+                "stamp" => $DateObject->getDayStamp(),
+                "name" => $name,
+                "reference_id" => $reference_id
+            ]);
+
+            if(is_null($Document))
+            {
+                throw new DataNotFoundException("The requested hourly rating data was not found.");
+            }
+
+            return Utilities::BSONDocumentToHourlyData($Document);
+        }
+
+        /**
+         * Finds hourly data by ID
+         *
+         * @param string $collection
+         * @param string $id
+         * @return HourlyData
+         * @throws DataNotFoundException
+         */
+        public function getHourlyDataById(string $collection, string $id): HourlyData
+        {
+            $Collection = $this->Database->selectCollection($collection . '_hourly');
+
+            $Document = $Collection->findOne([
+                "_id" => new ObjectId($id)
+            ]);
+
+            if(is_null($Document))
+            {
+                throw new DataNotFoundException("The requested hourly rating data was not found.");
+            }
+
+            return Utilities::BSONDocumentToHourlyData($Document);
         }
 
         /**
