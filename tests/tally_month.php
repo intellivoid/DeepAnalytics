@@ -8,6 +8,6 @@
 
     $DeepAnalytics = new DeepAnalytics();
 
-    $DeepAnalytics->tallyMonthly('example', 'clicks', 2);
-    $DeepAnalytics->tallyMonthly('example', 'requests', 2, 2);
-    $DeepAnalytics->tallyMonthly('example', 'downloads', 2, 7);
+    $DeepAnalytics->tallyMonthly('example', 'clicks', null);
+    $DeepAnalytics->tallyMonthly('example', 'requests', null, 2);
+    $DeepAnalytics->tallyMonthly('example', 'downloads', null, 7);

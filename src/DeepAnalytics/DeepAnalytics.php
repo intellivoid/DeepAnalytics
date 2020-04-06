@@ -386,4 +386,116 @@
 
             return $MonthlyData;
         }
+
+        /**
+         * Gets the data range for monthly data.
+         *
+         * @param string $collection
+         * @param string $name
+         * @param int|null $reference_id
+         * @param int $limit
+         * @return array
+         */
+        public function getMonthlyDataRange(string $collection, string $name, int $reference_id=null, $limit=100): array
+        {
+            $Collection = $this->Database->selectCollection($collection . '_monthly');
+
+            if(is_null($reference_id))
+            {
+                $reference_id = 0;
+            }
+
+            $Cursor = $Collection->find(
+                [
+                    'name' => $name,
+                    'reference_id' => $reference_id
+                ],
+                [
+                    'projection' => [
+                        '_id' => 1,
+                        'stamp' => 1,
+                        'date' => 1
+                    ],
+                    'sort' => [
+                        'created' => -1
+                    ],
+                    'limit' => $limit
+                ]
+            );
+
+            $Results = [];
+
+            /** @var BSONDocument $document */
+            foreach($Cursor as $document)
+            {
+                $DocumentArray = (array)$document->jsonSerialize();
+                $DateArray = (array)$DocumentArray['date']->jsonSerialize();
+
+                $Results[$DocumentArray['stamp']] = array(
+                    'id' => (string)$DocumentArray['_id'],
+                    'date' => $DateArray
+                );
+            }
+
+            return $Results;
+        }
+
+        /**
+         * Returns the monthly data by content pointers
+         * 
+         * @param string $collection
+         * @param string $name
+         * @param int|null $reference_id
+         * @param int|null $year
+         * @param int|null $month
+         * @param int|null $day
+         * @return MonthlyData
+         * @throws DataNotFoundException
+         */
+        public function getMonthlyData(string $collection, string $name, int $reference_id=null,
+                                      int $year=null, int $month=null): MonthlyData
+        {
+            $Collection = $this->Database->selectCollection($collection . '_monthly');
+            $DateObject = Utilities::constructDate($year, $month);
+
+            if(is_null($reference_id))
+            {
+                $reference_id = 0;
+            }
+
+            $Document = $Collection->findOne([
+                "stamp" => $DateObject->getMonthStamp(),
+                "name" => $name,
+                "reference_id" => $reference_id
+            ]);
+
+            if(is_null($Document))
+            {
+                throw new DataNotFoundException("The requested monthly rating data was not found.");
+            }
+
+            return Utilities::BSONDocumentToMonthlyData($Document);
+        }
+
+        /**
+         * @param string $collection
+         * @param string $id
+         * @return MonthlyData
+         * @throws DataNotFoundException
+         */
+        public function getMonthlyDataById(string $collection, string $id): MonthlyData
+        {
+            $Collection = $this->Database->selectCollection($collection . '_monthly');
+
+            $Document = $Collection->findOne([
+                "_id" => new ObjectId($id)
+            ]);
+
+            if(is_null($Document))
+            {
+                throw new DataNotFoundException("The requested monthly rating data was not found.");
+            }
+
+            return Utilities::BSONDocumentToMonthlyData($Document);
+        }
     }
