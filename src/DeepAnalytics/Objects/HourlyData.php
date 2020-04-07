@@ -160,6 +160,7 @@
         {
             $HourlyDataObject = new HourlyData();
 
+            /** @noinspection DuplicatedCode */
             if(isset($data['id']))
             {
                 if(is_null($data['id']) == false)

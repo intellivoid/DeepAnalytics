@@ -56,7 +56,7 @@
                     break;
                 }
 
-                $results[$current_count] = 0;
+                $results[(int)$current_count] = 0;
                 $current_count += 1;
             }
 
@@ -83,11 +83,11 @@
             }
 
             $last = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-            $results = Array();
+            $results = array();
 
             for ($day=1; $day<=$last; $day++)
             {
-                $results[$day] = 0;
+                $results[(int)$day - 1] = 0;
             }
 
             return $results;
