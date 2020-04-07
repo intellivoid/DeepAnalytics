@@ -236,6 +236,8 @@
         }
 
         /**
+         * Returns the data, optionally formatted.
+         *
          * @param bool $formatted
          * @return array
          */
