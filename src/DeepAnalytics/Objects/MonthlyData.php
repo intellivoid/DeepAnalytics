@@ -54,6 +54,13 @@
         public $Data;
 
         /**
+         * The total combined from data
+         *
+         * @var int
+         */
+        public $Total;
+
+        /**
          * The Unix Timestamp when this record was last updated
          *
          * @var int
@@ -103,8 +110,8 @@
         {
             if(is_null($day))
             {
-                $day = (int)date('j') - 1;
-                $this->Data[(int)$day] += $amount;
+                $day = (int)date('j');
+                $this->Data[(int)$day -1] += $amount;
             }
             else
             {
@@ -115,6 +122,8 @@
 
                 $this->Data[(int)$day - 1] += $amount;
             }
+
+            $this->Total = Utilities::calculateTotal($this->Data);
         }
 
         /**
@@ -131,6 +140,7 @@
                 'date' => $this->Date->toArray(false),
                 'stamp' => $this->Stamp,
                 'data' => $this->Data,
+                'total' => (int)$this->Total,
                 'last_updated' => (int)$this->LastUpdated,
                 'created' => (int)$this->Created
             );
@@ -185,6 +195,11 @@
             if(isset($data['data']))
             {
                 $MonthlyDataObject->Data = $data['data'];
+            }
+
+            if(isset($data['total']))
+            {
+                $MonthlyDataObject->Total = (int)$data['total'];
             }
 
             if(isset($data['last_updated']))

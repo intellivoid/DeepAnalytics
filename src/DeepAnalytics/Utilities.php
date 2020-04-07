@@ -154,4 +154,22 @@
 
             return $DateObject;
         }
+
+        /**
+         * Calculates the total from an array
+         *
+         * @param array $data
+         * @return int
+         */
+        static function calculateTotal(array $data): int
+        {
+            $Results = 0;
+
+            foreach($data as $value)
+            {
+                $Results += (int)$value;
+            }
+
+            return $Results;
+        }
     }
