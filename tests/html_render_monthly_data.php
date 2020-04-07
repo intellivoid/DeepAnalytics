@@ -10,21 +10,21 @@
     $monthly_clicks_data = $DeepAnalytics->getMonthlyData('example','clicks');
     foreach($monthly_clicks_data->getData(true) as $key => $value)
     {
-        $Date = $monthly_clicks_data->Date->Year . '-' . $monthly_clicks_data->Date->Month . '-' . $key;
+        $Date = \DeepAnalytics\Utilities::generateFullMonthStamp($monthly_clicks_data->Date, $key);
         $FetchedData[$Date]['clicks'] = $value;
     }
 
     $monthly_downloads_data = $DeepAnalytics->getMonthlyData('example', 'downloads');
     foreach($monthly_downloads_data->getData(true) as $key => $value)
     {
-        $Date = $monthly_downloads_data->Date->Year . '-' . $monthly_downloads_data->Date->Month . '-' . $key;
+        $Date = \DeepAnalytics\Utilities::generateFullMonthStamp($monthly_downloads_data->Date, $key);
         $FetchedData[$Date]['downloads'] = $value;
     }
 
     $monthly_requests_data = $DeepAnalytics->getMonthlyData('example', 'requests');
     foreach($monthly_requests_data->getData(true) as $key => $value)
     {
-        $Date = $monthly_requests_data->Date->Year . '-' . $monthly_requests_data->Date->Month . '-' . $key;
+        $Date = \DeepAnalytics\Utilities::generateFullMonthStamp($monthly_requests_data->Date, $key);
         $FetchedData[$Date]['requests'] = $value;
     }
 

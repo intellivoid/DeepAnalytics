@@ -8,21 +8,24 @@
     $Labels =  ["Clicks", "Request", "Downloads"];
 
     $hourly_clicks_data = $DeepAnalytics->getHourlyData('example','clicks');
-    foreach($hourly_clicks_data->Data as $key => $value)
+    foreach($hourly_clicks_data->getData(true) as $key => $value)
     {
-        $FetchedData["$key:00"]['clicks'] = $value;
+        $Date = \DeepAnalytics\Utilities::generateFullHourStamp($hourly_clicks_data->Date, $key);
+        $FetchedData[$Date]['clicks'] = $value;
     }
 
     $hourly_downloads_data = $DeepAnalytics->getHourlyData('example', 'downloads');
-    foreach($hourly_downloads_data->Data as $key => $value)
+    foreach($hourly_downloads_data->getData(true) as $key => $value)
     {
-        $FetchedData["$key:00"]['downloads'] = $value;
+        $Date = \DeepAnalytics\Utilities::generateFullHourStamp($hourly_downloads_data->Date, $key);
+        $FetchedData[$Date]['downloads'] = $value;
     }
 
     $hourly_requests_data = $DeepAnalytics->getHourlyData('example', 'requests');
-    foreach($hourly_requests_data->Data as $key => $value)
+    foreach($hourly_requests_data->getData(true) as $key => $value)
     {
-        $FetchedData["$key:00"]['requests'] = $value;
+        $Date = \DeepAnalytics\Utilities::generateFullHourStamp($hourly_requests_data->Date, $key);
+        $FetchedData[$Date]['requests'] = $value;
     }
 
     $Data = [];
