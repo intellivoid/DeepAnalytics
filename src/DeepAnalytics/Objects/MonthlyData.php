@@ -214,4 +214,32 @@
 
             return $MonthlyDataObject;
         }
+
+        /**
+         * Returns the data, optionally formatted.
+         *
+         * @param bool $formatted
+         * @return array
+         */
+        public function getData(bool $formatted=true): array
+        {
+            if($formatted)
+            {
+                $Results = array();
+
+                foreach($this->Data as $key => $value)
+                {
+                    if($key < 10)
+                    {
+                        $key = "0$key";
+                    }
+
+                    $Results[(string)$key] = $value;
+                }
+
+                return $Results;
+            }
+
+            return $this->Data;
+        }
     }
