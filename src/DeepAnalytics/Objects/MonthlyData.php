@@ -111,13 +111,13 @@
             if(is_null($day))
             {
                 $day = (int)date('j');
-                $this->Data[(int)$day -1] += $amount;
+                $this->Data[(int)$day - 1] += $amount;
             }
             else
             {
                 if(isset($this->Data[(int)$day]) == false)
                 {
-                    throw new InvalidArgumentException("The given day must be a value between 1 and " . count($this->Data));
+                    throw new InvalidArgumentException("The given day must be a value between 1 and " . (count($this->Data) +1));
                 }
 
                 $this->Data[(int)$day - 1] += $amount;
