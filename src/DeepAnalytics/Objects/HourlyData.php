@@ -234,4 +234,25 @@
 
             return $HourlyDataObject;
         }
+
+        /**
+         * @param bool $formatted
+         * @return array
+         */
+        public function getData(bool $formatted=true): array
+        {
+            if($formatted)
+            {
+                $Results = array();
+
+                foreach($this->Data as $key => $value)
+                {
+                    $Results["$key:00"] = $value;
+                }
+
+                return $Results;
+            }
+
+            return $this->Data;
+        }
     }
