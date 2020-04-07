@@ -8,21 +8,24 @@
     $Labels =  ["Clicks", "Request", "Downloads"];
 
     $monthly_clicks_data = $DeepAnalytics->getMonthlyData('example','clicks');
-    foreach($monthly_clicks_data->Data as $key => $value)
+    foreach($monthly_clicks_data->getData(true) as $key => $value)
     {
-        $FetchedData["$key:00"]['clicks'] = $value;
+        $Date = $monthly_clicks_data->Date->Year . '-' . $monthly_clicks_data->Date->Month . '-' . $key;
+        $FetchedData[$Date]['clicks'] = $value;
     }
 
     $monthly_downloads_data = $DeepAnalytics->getMonthlyData('example', 'downloads');
-    foreach($monthly_downloads_data->Data as $key => $value)
+    foreach($monthly_downloads_data->getData(true) as $key => $value)
     {
-        $FetchedData["$key:00"]['downloads'] = $value;
+        $Date = $monthly_downloads_data->Date->Year . '-' . $monthly_downloads_data->Date->Month . '-' . $key;
+        $FetchedData[$Date]['downloads'] = $value;
     }
 
     $monthly_requests_data = $DeepAnalytics->getMonthlyData('example', 'requests');
-    foreach($monthly_requests_data->Data as $key => $value)
+    foreach($monthly_requests_data->getData(true) as $key => $value)
     {
-        $FetchedData["$key:00"]['requests'] = $value;
+        $Date = $monthly_requests_data->Date->Year . '-' . $monthly_requests_data->Date->Month . '-' . $key;
+        $FetchedData[$Date]['requests'] = $value;
     }
 
     $Data = [];
@@ -30,7 +33,7 @@
     foreach($FetchedData as $key => $value)
     {
         $Data[] = array(
-            'hour' => $key,
+            'day' => $key,
             'clicks' => $value['clicks'],
             'downloads' => $value['downloads'],
             'requests' => $value['requests']
@@ -46,7 +49,7 @@
     </header>
     <body>
 
-        <div id="hourly_data" style="height: 250px;"></div>
+        <div id="monthly_data" style="height: 250px;"></div>
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
@@ -54,12 +57,12 @@
         <script>
             new Morris.Line({
                 // ID of the element in which to draw the chart.
-                element: 'hourly_data',
+                element: 'monthly_data',
                 // Chart data records -- each entry in this array corresponds to a point on
                 // the chart.
                 data: <?PHP print(json_encode($Data, JSON_PRETTY_PRINT)); ?>,
                 // The name of the data record attribute that contains x-values.
-                xkey: 'hour',
+                xkey: 'day',
                 // A list of names of data record attributes that contain y-values.
                 ykeys: ['clicks', 'requests', 'downloads'],
                 // Labels for the ykeys -- will be displayed when you hover over the
