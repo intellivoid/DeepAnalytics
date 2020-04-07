@@ -60,6 +60,13 @@
         public $Data;
 
         /**
+         * The total amount calculated from all the data
+         *
+         * @var int
+         */
+        public $Total;
+
+        /**
          * The Unix Timestamp when this record was last updated
          *
          * @var int
@@ -128,6 +135,8 @@
 
                 $this->Data[$hour] += $amount;
             }
+
+            $this->Total = Utilities::calculateTotal($this->Data);
         }
 
         /**
@@ -145,6 +154,7 @@
                 'stamp' => $this->Stamp,
                 'month_stamp' => $this->MonthStamp,
                 'data' => $this->Data,
+                'total' => (int)$this->Total,
                 'last_updated' => (int)$this->LastUpdated,
                 'created' => (int)$this->Created
             );
@@ -205,6 +215,11 @@
             if(isset($data['data']))
             {
                 $HourlyDataObject->Data = $data['data'];
+            }
+
+            if(isset($data['total']))
+            {
+                $HourlyDataObject->Total = (int)$data['total'];
             }
 
             if(isset($data['last_updated']))
