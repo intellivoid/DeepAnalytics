@@ -108,6 +108,7 @@
          */
         public function tally(int $amount=1, int $day=null)
         {
+
             if(is_null($day))
             {
                 $day = (int)date('j');
