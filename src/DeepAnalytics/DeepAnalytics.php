@@ -119,17 +119,17 @@
         public function tallyHourly(string $collection, string $name, int $reference_id=null, int $amount=1,
                                     int $year=null, int $month=null, int $day=null, bool $throw_dup=false): HourlyData
         {
+            if(is_null($reference_id))
+            {
+                $reference_id = 0;
+            }
+
             $HourlyData = new HourlyData($year, $month, $day);
             $HourlyData->ReferenceID = $reference_id;
             $HourlyData->Name = $name;
 
             $Collection = $this->Database->selectCollection($collection . '_hourly');
             $Document = null;
-
-            if(is_null($reference_id))
-            {
-                $reference_id = 0;
-            }
 
             $Document = $Collection->findOne([
                 "stamp" => $HourlyData->Stamp,
@@ -259,13 +259,14 @@
          * @param string $collection
          * @param string $name
          * @param int|null $reference_id
+         * @param bool $throw_exception
          * @param int|null $year
          * @param int|null $month
          * @param int|null $day
          * @return HourlyData
          * @throws DataNotFoundException
          */
-        public function getHourlyData(string $collection, string $name, int $reference_id=null,
+        public function getHourlyData(string $collection, string $name, int $reference_id=null, bool $throw_exception=true,
                                       int $year=null, int $month=null, int $day=null): HourlyData
         {
             $Collection = $this->Database->selectCollection($collection . '_hourly');
@@ -284,7 +285,11 @@
 
             if(is_null($Document))
             {
-                throw new DataNotFoundException("The requested hourly rating data was not found.");
+                if($throw_exception)
+                {
+                    throw new DataNotFoundException("The requested hourly rating data was not found.");
+                }
+
             }
 
             return Utilities::BSONDocumentToHourlyData($Document);
@@ -478,13 +483,13 @@
         public function getMonthlyData(string $collection, string $name, int $reference_id=null,
                                       int $year=null, int $month=null): MonthlyData
         {
-            $Collection = $this->Database->selectCollection($collection . '_monthly');
-            $DateObject = Utilities::constructDate($year, $month);
-
             if(is_null($reference_id))
             {
                 $reference_id = 0;
             }
+
+            $Collection = $this->Database->selectCollection($collection . '_monthly');
+            $DateObject = Utilities::constructDate($year, $month);
 
             $Document = $Collection->findOne([
                 "stamp" => $DateObject->getMonthStamp(),
