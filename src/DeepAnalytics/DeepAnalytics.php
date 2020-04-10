@@ -351,17 +351,17 @@
         public function tallyMonthly(string $collection, string $name, int $reference_id=null, int $amount=1,
                                     int $year=null, int $month=null, bool $throw_dup=false): MonthlyData
         {
+            if(is_null($reference_id))
+            {
+                $reference_id = 0;
+            }
+
             $MonthlyData = new MonthlyData($year, $month);
             $MonthlyData->ReferenceID = $reference_id;
             $MonthlyData->Name = $name;
 
             $Collection = $this->Database->selectCollection($collection . '_monthly');
             $Document = null;
-
-            if(is_null($reference_id))
-            {
-                $reference_id = 0;
-            }
 
             $Document = $Collection->findOne([
                 "stamp" => $MonthlyData->Stamp,
@@ -487,17 +487,17 @@
 
         /**
          * Returns the monthly data by content pointers
-         * 
+         *
          * @param string $collection
          * @param string $name
          * @param int|null $reference_id
+         * @param bool $throw_exception
          * @param int|null $year
          * @param int|null $month
-         * @param int|null $day
          * @return MonthlyData
          * @throws DataNotFoundException
          */
-        public function getMonthlyData(string $collection, string $name, int $reference_id=null,
+        public function getMonthlyData(string $collection, string $name, int $reference_id=null, bool $throw_exception=true,
                                       int $year=null, int $month=null): MonthlyData
         {
             if(is_null($reference_id))
