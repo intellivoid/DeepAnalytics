@@ -290,6 +290,12 @@
                     throw new DataNotFoundException("The requested hourly rating data was not found.");
                 }
 
+                $HourlyData = new HourlyData($year, $month, $day);
+                $HourlyData->ID = null;
+                $HourlyData->ReferenceID = $reference_id;
+                $HourlyData->Name = $name;
+
+                return $HourlyData;
             }
 
             return Utilities::BSONDocumentToHourlyData($Document);
