@@ -1,7 +1,7 @@
 <?php /** @noinspection PhpUnused */
 
 
-namespace DeepAnalytics;
+    namespace DeepAnalytics;
 
     use acm\acm;
     use DeepAnalytics\Exceptions\DataNotFoundException;
@@ -208,6 +208,7 @@ namespace DeepAnalytics;
          * @param int|null $reference_id
          * @param int $limit
          * @return array
+         * @noinspection DuplicatedCode
          */
         public function getHourlyDataRange(string $collection, string $name, int $reference_id=null, $limit=100): array
         {
@@ -440,6 +441,7 @@ namespace DeepAnalytics;
          * @param int|null $reference_id
          * @param int $limit
          * @return array
+         * @noinspection DuplicatedCode
          */
         public function getMonthlyDataRange(string $collection, string $name, int $reference_id=null, $limit=100): array
         {
@@ -533,8 +535,11 @@ namespace DeepAnalytics;
         }
 
         /**
+         * Returns monthly data by ID
+         *
          * @param string $collection
          * @param string $id
+         * @param bool $throw_exception
          * @return MonthlyData
          * @throws DataNotFoundException
          */
