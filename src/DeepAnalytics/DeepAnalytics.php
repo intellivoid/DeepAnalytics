@@ -325,10 +325,10 @@
                     throw new DataNotFoundException("The requested hourly rating data was not found.");
                 }
 
-                $HourlyData = new HourlyData($year, $month, $day);
+                $HourlyData = new HourlyData();
                 $HourlyData->ID = null;
-                $HourlyData->ReferenceID = $reference_id;
-                $HourlyData->Name = $name;
+                $HourlyData->ReferenceID = null;
+                $HourlyData->Name = null;
 
                 return $HourlyData;
             }
