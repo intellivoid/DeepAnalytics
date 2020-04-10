@@ -516,7 +516,17 @@
 
             if(is_null($Document))
             {
-                throw new DataNotFoundException("The requested monthly rating data was not found.");
+                if($throw_exception)
+                {
+                    throw new DataNotFoundException("The requested monthly rating data was not found.");
+                }
+
+                $MonthlyData = new MonthlyData($year, $month);
+                $MonthlyData->ReferenceID = $reference_id;
+                $MonthlyData->Name = $name;
+                $MonthlyData->ID = null;
+
+                return $MonthlyData;
             }
 
             return Utilities::BSONDocumentToMonthlyData($Document);
