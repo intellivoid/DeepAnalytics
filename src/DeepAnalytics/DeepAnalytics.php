@@ -1,7 +1,7 @@
-<?php
+<?php /** @noinspection PhpUnused */
 
 
-    namespace DeepAnalytics;
+namespace DeepAnalytics;
 
     use acm\acm;
     use DeepAnalytics\Exceptions\DataNotFoundException;
@@ -538,7 +538,7 @@
          * @return MonthlyData
          * @throws DataNotFoundException
          */
-        public function getMonthlyDataById(string $collection, string $id): MonthlyData
+        public function getMonthlyDataById(string $collection, string $id, bool $throw_exception=true): MonthlyData
         {
             $Collection = $this->Database->selectCollection($collection . '_monthly');
 
@@ -548,7 +548,17 @@
 
             if(is_null($Document))
             {
-                throw new DataNotFoundException("The requested monthly rating data was not found.");
+                if($throw_exception)
+                {
+                    throw new DataNotFoundException("The requested monthly rating data was not found.");
+                }
+
+                $MonthlyData = new MonthlyData();
+                $MonthlyData->ReferenceID = null;
+                $MonthlyData->Name = null;
+                $MonthlyData->ID = null;
+
+                return $MonthlyData;
             }
 
             return Utilities::BSONDocumentToMonthlyData($Document);
