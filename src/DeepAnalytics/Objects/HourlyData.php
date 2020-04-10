@@ -121,6 +121,11 @@
          */
         public function tally(int $amount=1, int $hour=null)
         {
+            if($amount == 0)
+            {
+                return;
+            }
+            
             if(is_null($hour))
             {
                 $CurrentHour = (int)date('G');
