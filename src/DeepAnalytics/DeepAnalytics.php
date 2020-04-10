@@ -306,10 +306,11 @@
          *
          * @param string $collection
          * @param string $id
+         * @param bool $throw_exception
          * @return HourlyData
          * @throws DataNotFoundException
          */
-        public function getHourlyDataById(string $collection, string $id): HourlyData
+        public function getHourlyDataById(string $collection, string $id, bool $throw_exception=true): HourlyData
         {
             $Collection = $this->Database->selectCollection($collection . '_hourly');
 
@@ -319,7 +320,17 @@
 
             if(is_null($Document))
             {
-                throw new DataNotFoundException("The requested hourly rating data was not found.");
+                if($throw_exception)
+                {
+                    throw new DataNotFoundException("The requested hourly rating data was not found.");
+                }
+
+                $HourlyData = new HourlyData($year, $month, $day);
+                $HourlyData->ID = null;
+                $HourlyData->ReferenceID = $reference_id;
+                $HourlyData->Name = $name;
+
+                return $HourlyData;
             }
 
             return Utilities::BSONDocumentToHourlyData($Document);
