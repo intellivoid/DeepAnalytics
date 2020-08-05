@@ -1,0 +1,55 @@
+{
+    "package": {
+        "package_name": "net.intellivoid.deepanalytics",
+        "name": "DeepAnalytics",
+        "version": "1.0.0.3",
+        "author": "Zi Xing Narrakas",
+        "organization": "Intellivoid",
+        "description": "Advanced & Fast Analytics using MongoDB",
+        "url": "https://github.com/intellivoid/DeepAnalytics",
+        "dependencies": [
+            {"package": "net.intellivoid.acm", "required": true, "version": "latest"},
+            {"package": "net.intellivoid.mongodb_driver", "required": true, "version": "latest"}
+        ],
+        "configuration": {
+            "autoload_method": "indexed",
+            "main": null,
+            "post_installation": [],
+            "pre_installation": []
+        }
+    },
+    "components": [
+        {
+            "required": true,
+            "file": "AutoConfig.php"
+        },
+        {
+            "required": true,
+            "file": "DeepAnalytics.php"
+        },
+        {
+            "required": true,
+            "file": "Exceptions/DataNotFoundException.php"
+        },
+        {
+            "required": true,
+            "file": "Objects/Date.php"
+        },
+        {
+            "required": true,
+            "file": "Objects/HourlyData.php"
+        },
+        {
+            "required": true,
+            "file": "Objects/MonthlyData.php"
+        },
+        {
+            "required": true,
+            "file": "Utilities.php"
+        }
+    ],
+    "files": [
+        "configuration.ini",
+        "deep_analytics.json"
+    ]
+}

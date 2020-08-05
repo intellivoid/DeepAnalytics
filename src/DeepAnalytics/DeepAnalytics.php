@@ -13,23 +13,34 @@
     use MongoDB\Database;
     use MongoDB\Driver\Exception\BulkWriteException;
     use MongoDB\Model\BSONDocument;
+    use ppm\ppm;
 
-    include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Exceptions' . DIRECTORY_SEPARATOR . 'DataNotFoundException.php');
-
-    include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Objects' . DIRECTORY_SEPARATOR . 'Date.php');
-    include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Objects' . DIRECTORY_SEPARATOR . 'HourlyData.php');
-    include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Objects' . DIRECTORY_SEPARATOR . 'MonthlyData.php');
-
-    include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Utilities.php');
-
-    if(class_exists('MongoDB\Client') == false)
+    if(defined("PPM") == false)
     {
-        include_once(__DIR__ . DIRECTORY_SEPARATOR . 'MongoDB' . DIRECTORY_SEPARATOR . 'MongoDB.php');
+        include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Exceptions' . DIRECTORY_SEPARATOR . 'DataNotFoundException.php');
+
+        include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Objects' . DIRECTORY_SEPARATOR . 'Date.php');
+        include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Objects' . DIRECTORY_SEPARATOR . 'HourlyData.php');
+        include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Objects' . DIRECTORY_SEPARATOR . 'MonthlyData.php');
+
+        include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Utilities.php');
+
+        if(class_exists('MongoDB\Client') == false)
+        {
+            /** @noinspection PhpIncludeInspection */
+            include_once(__DIR__ . DIRECTORY_SEPARATOR . 'MongoDB' . DIRECTORY_SEPARATOR . 'MongoDB.php');
+        }
+
+        if(class_exists('acm\acm') == false)
+        {
+            /** @noinspection PhpIncludeInspection */
+            include_once(__DIR__ . DIRECTORY_SEPARATOR . 'acm' . DIRECTORY_SEPARATOR . 'acm.php');
+        }
     }
-
-    if(class_exists('acm\acm') == false)
+    else
     {
-        include_once(__DIR__ . DIRECTORY_SEPARATOR . 'acm' . DIRECTORY_SEPARATOR . 'acm.php');
+        ppm::import("net.intellivoid.acm");
+        ppm::import("net.intellivoid.mongodb_driver");
     }
 
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'AutoConfig.php');
