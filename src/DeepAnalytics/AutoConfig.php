@@ -10,7 +10,7 @@
             include_once(__DIR__ . DIRECTORY_SEPARATOR . 'acm' . DIRECTORY_SEPARATOR . 'acm.php');
         }
     }
-    
+
     $acm = new acm(__DIR__, 'deep_analytics');
 
     $MongoDbSchema = new Schema();
