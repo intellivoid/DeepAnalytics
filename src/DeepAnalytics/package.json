@@ -8,8 +8,8 @@
         "description": "Advanced & Fast Analytics using MongoDB",
         "url": "https://github.com/intellivoid/DeepAnalytics",
         "dependencies": [
-            {"package": "net.intellivoid.acm", "required": true, "version": "latest"},
-            {"package": "net.intellivoid.mongodb_driver", "required": true, "version": "latest"}
+            {"package": "net.intellivoid.acm", "required": true, "version": "latest", "source": "default@github/intellivoid/acm"},
+            {"package": "net.intellivoid.mongodb_driver", "required": true, "version": "latest", "source": "default@github/intellivoid/mongo-driver"}
         ],
         "configuration": {
             "autoload_method": "generated_spl",
