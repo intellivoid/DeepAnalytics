@@ -10,15 +10,15 @@
         "dependencies": [
             {
                 "package": "net.intellivoid.acm",
-                "required": true,
                 "version": "latest",
-                "source": "default@github/intellivoid/acm"
+                "source": "default@github/intellivoid/acm",
+                "required": true
             },
             {
-                "package": "net.mongodb.mongodb",
-                "required": true,
+                "package": "com.mongodb.mongodb",
                 "version": "latest",
-                "source": "mongodb@composer/mongodb"
+                "source": "mongodb@composer/mongodb",
+                "required": true
             }
         ],
         "configuration": {
@@ -31,15 +31,19 @@
     "components": [
         {
             "required": true,
-            "file": "AutoConfig.php"
-        },
-        {
-            "required": true,
             "file": "DeepAnalytics.php"
         },
         {
             "required": true,
+            "file": "Utilities.php"
+        },
+        {
+            "required": true,
             "file": "Exceptions/DataNotFoundException.php"
+        },
+        {
+            "required": true,
+            "file": "AutoConfig.php"
         },
         {
             "required": true,
@@ -52,13 +56,10 @@
         {
             "required": true,
             "file": "Objects/MonthlyData.php"
-        },
-        {
-            "required": true,
-            "file": "Utilities.php"
         }
     ],
     "files": [
+        "package.json",
         "configuration.ini",
         "deep_analytics.json"
     ]
