@@ -13,7 +13,6 @@
     use MongoDB\Database;
     use MongoDB\Driver\Exception\BulkWriteException;
     use MongoDB\Model\BSONDocument;
-    use VerboseAdventure\VerboseAdventure;
 
     include_once(__DIR__ . DIRECTORY_SEPARATOR . 'AutoConfig.php');
 
@@ -44,11 +43,6 @@
         private $Database;
 
         /**
-         * @var VerboseAdventure
-         */
-        private VerboseAdventure $Logging;
-
-        /**
          * DeepAnalytics constructor.
          * @throws Exception
          */
@@ -66,7 +60,6 @@
             );
 
             $this->Database = $this->MongoDB_Client->selectDatabase($this->DatabaseConfiguration['Database']);
-            $this->Logging = new VerboseAdventure("DeepAnalytics");
         }
 
         /**
@@ -556,14 +549,6 @@
             }
 
             return Utilities::BSONDocumentToMonthlyData($Document);
-        }
-
-        /**
-         * @return VerboseAdventure
-         */
-        public function getLogging(): VerboseAdventure
-        {
-            return $this->Logging;
         }
 
         /**
