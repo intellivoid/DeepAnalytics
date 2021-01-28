@@ -90,7 +90,7 @@
          *
          * @param string $collection
          * @param string $name
-         * @param int $reference_id
+         * @param int|null $reference_id
          * @param int $amount
          * @param int|null $year
          * @param int|null $month
@@ -324,7 +324,7 @@
          *
          * @param string $collection
          * @param string $name
-         * @param int $reference_id
+         * @param int|null $reference_id
          * @param int $amount
          * @param int|null $year
          * @param int|null $month
