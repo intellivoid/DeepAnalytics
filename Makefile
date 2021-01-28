@@ -6,4 +6,4 @@ build:
 	ppm --no-intro --compile="src/DeepAnalytics" --directory="build"
 
 install:
-	ppm --no-intro --no-prompt --install="build/net.intellivoid.deepanalytics.ppm"
+	ppm --no-intro --no-prompt --fix-conflict --branch="production" --install="build/net.intellivoid.deepanalytics.ppm"

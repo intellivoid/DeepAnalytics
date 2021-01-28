@@ -9,7 +9,7 @@
         "url": "https://github.com/intellivoid/DeepAnalytics",
         "dependencies": [
             {"package": "net.intellivoid.acm", "required": true, "version": "latest", "source": "default@github/intellivoid/acm"},
-            {"package": "net.intellivoid.mongodb_driver", "required": true, "version": "latest", "source": "default@github/intellivoid/mongo-driver"}
+            {"package": "net.mongodb.mongodb", "required": true, "version": "latest", "source": "mongodb@composer/mongodb"}
         ],
         "configuration": {
             "autoload_method": "generated_spl",
