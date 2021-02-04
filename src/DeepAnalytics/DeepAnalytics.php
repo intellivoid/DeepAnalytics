@@ -570,7 +570,7 @@
         /**
          * @return string
          */
-        public function getCollectionHolder(): mixed
+        public function getCollectionHolder(): string
         {
             return $this->CollectionHolder;
         }
@@ -578,9 +578,10 @@
         /**
          * @param string $CollectionHolder
          */
-        public function setCollectionHolder(mixed $CollectionHolder): void
+        public function setCollectionHolder(string $CollectionHolder)
         {
-            $this->Database = $this->MongoDB_Client->selectDatabase($this->CollectionHolder);
             $this->CollectionHolder = $CollectionHolder;
+            $this->Database = $this->MongoDB_Client->selectDatabase($this->CollectionHolder);
+
         }
     }
