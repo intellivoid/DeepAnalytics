@@ -43,6 +43,13 @@
         private $Database;
 
         /**
+         * The collection holder name
+         *
+         * @var string
+         */
+        private $CollectionHolder;
+
+        /**
          * DeepAnalytics constructor.
          * @throws Exception
          */
@@ -59,7 +66,8 @@
                 )
             );
 
-            $this->Database = $this->MongoDB_Client->selectDatabase($this->DatabaseConfiguration['Database']);
+            $this->CollectionHolder = $this->DatabaseConfiguration['Database'];
+            $this->Database = $this->MongoDB_Client->selectDatabase($this->CollectionHolder);
         }
 
         /**
@@ -557,5 +565,22 @@
         public function getDatabase(): Database
         {
             return $this->Database;
+        }
+
+        /**
+         * @return string
+         */
+        public function getCollectionHolder(): mixed
+        {
+            return $this->CollectionHolder;
+        }
+
+        /**
+         * @param string $CollectionHolder
+         */
+        public function setCollectionHolder(mixed $CollectionHolder): void
+        {
+            $this->Database = $this->MongoDB_Client->selectDatabase($this->CollectionHolder);
+            $this->CollectionHolder = $CollectionHolder;
         }
     }
