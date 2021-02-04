@@ -2,7 +2,7 @@
     "package": {
         "package_name": "net.intellivoid.deepanalytics",
         "name": "DeepAnalytics",
-        "version": "1.0.0.4",
+        "version": "1.0.0.5",
         "author": "Zi Xing Narrakas",
         "organization": "Intellivoid",
         "description": "Advanced & Fast Analytics using MongoDB",
