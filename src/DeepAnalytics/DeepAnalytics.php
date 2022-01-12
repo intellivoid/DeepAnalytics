@@ -17,8 +17,6 @@
     use MongoDB\Driver\Exception\BulkWriteException;
     use MongoDB\Model\BSONDocument;
 
-    include_once(__DIR__ . DIRECTORY_SEPARATOR . 'AutoConfig.php');
-
     /**
      * Class DeepAnalytics
      * @package DeepAnalytics
