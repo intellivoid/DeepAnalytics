@@ -100,8 +100,14 @@
         {
             $Results = array();
 
-            $Results['hourly'] = $this->tallyHourly($collection, $name, $reference_id, $amount, $year, $month, $day);
-            $Results['monthly'] = $this->tallyMonthly($collection, $name, $reference_id, $amount, $year, $month);
+            $Results['hourly'] = $this->tallyHourly($collection, $name, null, $amount, $year, $month, $day);
+            $Results['monthly'] = $this->tallyMonthly($collection, $name, null, $amount, $year, $month);
+
+            if($reference_id !== null)
+            {
+                $this->tallyHourly($collection, $name, $reference_id, $amount, $year, $month, $day);
+                $this->tallyMonthly($collection, $name, $reference_id, $amount, $year, $month);
+            }
 
             return $Results;
         }
