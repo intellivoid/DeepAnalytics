@@ -136,8 +136,7 @@
             $Document = $Collection->findOne([
                 "stamp" => $HourlyData->Stamp,
                 "name" => $name,
-                "reference_id" => $reference_id,
-                "action" => null
+                "reference_id" => $reference_id
             ]);
 
             if(is_null($Document))
