@@ -43,10 +43,6 @@
         },
         {
             "required": true,
-            "file": "AutoConfig.php"
-        },
-        {
-            "required": true,
             "file": "Objects/Date.php"
         },
         {
@@ -59,8 +55,6 @@
         }
     ],
     "files": [
-        "package.json",
-        "configuration.ini",
-        "deep_analytics.json"
+        "package.json"
     ]
 }
