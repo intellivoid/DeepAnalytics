@@ -1,9 +1,12 @@
-<?php /** @noinspection PhpUnused */
+<?php
 
+    /** @noinspection PhpMissingFieldTypeInspection */
+    /** @noinspection PhpUnused */
 
     namespace DeepAnalytics;
 
-    use acm\acm;
+    use acm2\acm2;
+    use acm2\Objects\Schema;
     use DeepAnalytics\Exceptions\DataNotFoundException;
     use DeepAnalytics\Objects\HourlyData;
     use DeepAnalytics\Objects\MonthlyData;
@@ -23,7 +26,7 @@
     class DeepAnalytics
     {
         /**
-         * @var acm
+         * @var acm2
          */
         private $acm;
 
@@ -55,7 +58,19 @@
          */
         public function __construct()
         {
-            $this->acm = new acm(__DIR__, 'deep_analytics');
+            $this->acm = new acm2('deep_analytics');
+
+            $MongoDbSchema = new Schema();
+            $MongoDbSchema->setName('MongoDB');
+            $MongoDbSchema->setDefinition('Host', '127.0.0.1');
+            $MongoDbSchema->setDefinition('Port', '27017');
+            $MongoDbSchema->setDefinition('Username', '');
+            $MongoDbSchema->setDefinition('Password', '');
+            $MongoDbSchema->setDefinition('Database', 'deep_analytics');
+            
+            $this->acm->defineSchema($MongoDbSchema);
+            $this->acm->updateConfiguration();
+            
             $this->DatabaseConfiguration = $this->acm->getConfiguration('MongoDB');
 
             $this->MongoDB_Client = new Client(
@@ -119,12 +134,12 @@
             $HourlyData->Name = $name;
 
             $Collection = $this->Database->selectCollection($collection . '_hourly');
-            $Document = null;
 
             $Document = $Collection->findOne([
                 "stamp" => $HourlyData->Stamp,
                 "name" => $name,
-                "reference_id" => $reference_id
+                "reference_id" => $reference_id,
+                "action" => null
             ]);
 
             if(is_null($Document))

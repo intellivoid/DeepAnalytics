@@ -19,7 +19,7 @@
          *
          * @param int $year
          * @param int $month
-         * @param $day
+         * @param int $day
          * @return string
          */
         static function generateHourlyStamp(int $year, int $month, int $day): string
@@ -40,7 +40,7 @@
         }
 
         /**
-         * Generates an array of a 24 hour timeline
+         * Generates an array of a 24-hour timeline
          *
          * @return array
          */
@@ -69,6 +69,7 @@
          * @param int|null $month
          * @param int|null $year
          * @return array
+         * @noinspection PhpCastIsUnnecessaryInspection
          */
         static function generateMonthArray(int $month=null, int $year=null): array
         {
