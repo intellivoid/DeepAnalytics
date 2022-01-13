@@ -73,6 +73,9 @@ use DeepAnalytics\DeepAnalytics;
                 $Javascript->PaginationRightIcon = 'fas fa-chevron-right';
                 $Javascript->SpinnerIcon = 'fa fa-circle-o-notch fa-spin';
                 $Javascript->TabPaneExtras = 'p-3';
+                $Javascript->TabsExtras = 'mt-3';
+                $Javascript->HourlyUsageIcon = 'fas fa-calendar-alt';
+                $Javascript->MonthlyUsageIcon = 'fas fa-clock';
 
                 print($Javascript->generateCode());
             ?>

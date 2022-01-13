@@ -60,6 +60,27 @@
          */
         public $TabPaneExtras;
 
+        /**
+         * Extra attributes to append to the tabs class
+         *
+         * @var string
+         */
+        public $TabsExtras;
+
+        /**
+         * The icon to use for the hourly usage tab
+         *
+         * @var string
+         */
+        public $HourlyUsageIcon;
+
+        /**
+         * The icon to use for the monthly usage tab
+         *
+         * @var string
+         */
+        public $MonthlyUsageIcon;
+
         public function __construct()
         {
             $this->ChartColors = [];
@@ -83,6 +104,9 @@
             $FileContents = str_ireplace('/**%PAGINATION_RIGHT%*/', (string)$this->PaginationRightIcon, $FileContents);
             $FileContents = str_ireplace('/**%SPINNER_ICON%*/', (string)$this->SpinnerIcon, $FileContents);
             $FileContents = str_ireplace('/**%TAB_PANE_EXTRAS%*/', (string)$this->TabPaneExtras, $FileContents);
+            $FileContents = str_ireplace('/**%TABS_EXTRAS%*/', (string)$this->TabsExtras, $FileContents);
+            $FileContents = str_ireplace('/**%HOURLY_USAGE_ICON%*/', (string)$this->HourlyUsageIcon, $FileContents);
+            $FileContents = str_ireplace('/**%MONTHLY_USAGE_ICON%*/', (string)$this->MonthlyUsageIcon, $FileContents);
 
             return $FileContents;
         }

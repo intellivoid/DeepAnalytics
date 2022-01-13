@@ -244,7 +244,7 @@ const deepanalytics = {
              */
             render_tabs: function () {
                 $('<ul/>', {
-                    'class': 'nav nav-tabs',
+                    'class': 'nav nav-tabs /**%TABS_EXTRAS%*/',
                     'role': 'tablist',
                     'id': `${deepanalytics.instance_id}_deepanalytics_tab_view`,
                     'html': [
@@ -269,7 +269,7 @@ const deepanalytics = {
                                     $('<span/>', {
                                         'class': 'd-block d-md-none',
                                         'html': $('<i/>', {
-                                            'class': 'fas fa-calendar-alt'
+                                            'class': '/**%MONTHLY_USAGE_ICON%*/'
                                         })
                                     })
                                 ]
@@ -296,7 +296,7 @@ const deepanalytics = {
                                     $('<span/>', {
                                         'class': 'd-block d-md-none',
                                         'html': $('<i/>', {
-                                            'class': 'fas fa-clock'
+                                            'class': '/**%HOURLY_USAGE_ICON%*/'
                                         })
                                     })
                                 ]
