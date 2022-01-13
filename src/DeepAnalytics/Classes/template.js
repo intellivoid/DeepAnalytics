@@ -99,7 +99,7 @@ const deepanalytics = {
                 'html': $('<div/>', {
                     'class': 'p-2 my-flex-item fa-3x',
                     'html': $('<i/>', {
-                        'class': 'fa fa-circle-o-notch fa-spin'
+                        'class': '/**%SPINNER_ICON%*/'
                     })
                 })
             }).appendTo(`#${deepanalytics.display_id}`);
@@ -315,7 +315,7 @@ const deepanalytics = {
                     'id': `${deepanalytics.instance_id}_deepanalytics_tab_content`,
                     'html': [
                         $('<div/>', {
-                            'class': 'tab-pane active',
+                            'class': 'tab-pane /**%TAB_PANE_EXTRAS%*/ active',
                             'id': `${deepanalytics.instance_id}_deepanalytics_monthly_tab`,
                             'role': 'tabpanel',
                             'html': $('<div/>', {
@@ -325,7 +325,7 @@ const deepanalytics = {
                             })
                         }),
                         $('<div/>', {
-                            'class': 'tab-pane',
+                            'class': 'tab-pane /**%TAB_PANE_EXTRAS%*/',
                             'id': `${deepanalytics.instance_id}_deepanalytics_hourly_tab`,
                             'role': 'tabpanel',
                             'html': [
@@ -808,7 +808,7 @@ const deepanalytics = {
                                     "class": "page-link",
                                     "href": "#/",
                                     "html": $("<i/>", {
-                                        "class": "fas fa-chevron-left"
+                                        "class": "/**%PAGINATION_LEFT%*/"
                                     })
                                 })
                             })
@@ -845,7 +845,7 @@ const deepanalytics = {
                             "class": "page-link",
                             "href": "#/",
                             "html": $("<i/>", {
-                                "class": "fas fa-chevron-right"
+                                "class": "/**%PAGINATION_RIGHT%*/"
                             })
                         })
                     }).appendTo(`#${deepanalytics.instance_id}_deepanalytics_hourly_pg`);

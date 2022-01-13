@@ -69,6 +69,10 @@ use DeepAnalytics\DeepAnalytics;
                 $Javascript->ApiHandlerRoute = 'http://127.0.0.1:5008/deepanalytics/new_html_render.php';
                 $Javascript->ChartColors = ['#5468da', '#ffbb44', '#67a8e4', '#4ac18e', '#ea553d', '#3bc3e9', '#ea553d', '#e83e8c', '#007bff', '#20c997', '#ffc107', '#dc3545', '#6f42c1'];
                 $Javascript->GridlineColor = '#1a2036';
+                $Javascript->PaginationLeftIcon = 'fas fa-chevron-left';
+                $Javascript->PaginationRightIcon = 'fas fa-chevron-right';
+                $Javascript->SpinnerIcon = 'fa fa-circle-o-notch fa-spin';
+                $Javascript->TabPaneExtras = 'p-3';
 
                 print($Javascript->generateCode());
             ?>
