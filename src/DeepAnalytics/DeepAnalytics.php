@@ -507,8 +507,8 @@
          * @return MonthlyData
          * @throws DataNotFoundException
          */
-        public function getMonthlyData(string $collection, string $name, int $reference_id=null, bool $throw_exception=true,
-                                      int $year=null, int $month=null): MonthlyData
+        public function getMonthlyData(string $collection, string $name, ?int $reference_id=null, bool $throw_exception=true,
+                                      ?int $year=null, ?int $month=null): MonthlyData
         {
             if(is_null($reference_id))
             {

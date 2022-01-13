@@ -31,11 +31,27 @@
     "components": [
         {
             "required": true,
+            "file": "Abstracts/ApiActions.php"
+        },
+        {
+            "required": true,
+            "file": "Classes/Javascript.php"
+        },
+        {
+            "required": true,
+            "file": "Classes/API.php"
+        },
+        {
+            "required": true,
             "file": "DeepAnalytics.php"
         },
         {
             "required": true,
             "file": "Utilities.php"
+        },
+        {
+            "required": true,
+            "file": "Exceptions/MissingParameterException.php"
         },
         {
             "required": true,
@@ -55,6 +71,7 @@
         }
     ],
     "files": [
+        "Classes/template.js",
         "package.json"
     ]
 }
